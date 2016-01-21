@@ -24,35 +24,20 @@ window.findNRooksSolution = function(n) {
     if (currentRow === n) {
       return;
     }
-
+    // toggling/checking within a row
     for (var i = 0; i < board.get(0).length; i++) {
       board.togglePiece(currentRow, i);
 
       if (board.hasRowConflictAt(currentRow) || board.hasColConflictAt(i)) {
-        board.togglePiece(currentRow, i)
+        board.togglePiece(currentRow, i);
       }
     }
+    // toggling/checking the next row
     checkAndPlace(currentRow + 1);
   };
 
   checkAndPlace(0);
-  // start checking board from 0,0
-  // check if they have conficts,
-  // if no conflicts, toggle a piece
-  // stop checking that row and move to new row
-  //++
-  // inputs: current row (this.get(0), current column (this.get(0)[startingColPos+1]),
-  // this.get(startingRowPosition+1)
-  // , outputs
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  //console.log('board', JSON.stringify(board));
-  // [[1]]
-  // [[1,0],[0,1]]
-  // [[1,0,0],[0,1,0],[0,0,1]]
-  // return board.rows();
-
-
-
   return solution.rows();
 };
 
@@ -74,6 +59,7 @@ window.findNQueensSolution = function(n) {
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
+
 };
 
 
