@@ -18,15 +18,19 @@ window.findNRooksSolution = function(n) {
     'n': n
   });
   var solution = board;
+
   var checkAndPlace = function(currentRow) {
-    for (var i = 0; i < board.get(0).length; i++) {
-      if (board.hasRowConflictAt(currentRow) && board.hasColumnConflictAt(i)) {
-        board.togglePiece(currentRow, i);
-        break;
-      }
-    }
+
     if (currentRow === n) {
       return;
+    }
+
+    for (var i = 0; i < board.get(0).length; i++) {
+      board.togglePiece(currentRow, i);
+
+      if (board.hasRowConflictAt(currentRow) || board.hasColConflictAt(i)) {
+        board.togglePiece(currentRow, i)
+      }
     }
     checkAndPlace(currentRow + 1);
   };
@@ -41,11 +45,15 @@ window.findNRooksSolution = function(n) {
   // this.get(startingRowPosition+1)
   // , outputs
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  //console.log('board', JSON.stringify(board));
   // [[1]]
   // [[1,0],[0,1]]
   // [[1,0,0],[0,1,0],[0,0,1]]
   // return board.rows();
-  return solution;
+
+
+
+  return solution.rows();
 };
 
 
