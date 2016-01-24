@@ -90,7 +90,7 @@
 
 
     hasAnyRowConflicts: function() {
-      var n = this.get(0).length;
+      var n = this.get(0) ? this.get(0).length : 0;
       for (var i = 0; i < n; i++) {
         if (this.hasRowConflictAt(i)) {
           return true;
@@ -116,7 +116,7 @@
     },
 
     hasAnyColConflicts: function() {
-      var n = this.get(0).length;
+      var n = this.get(0) ? this.get(0).length : 0;
       for (var i = 0; i < n; i++) {
         if (this.hasColConflictAt(i)) {
           return true;
@@ -146,7 +146,7 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      var n = this.get(0).length;
+      var n = this.get(0) ? this.get(0).length : 0;
       for (var i = 0; i < n; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
@@ -177,7 +177,7 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      var n = this.get(0).length;
+       var n = this.get(0) ? this.get(0).length : 0;
       for (var i = 0; i < n; i++) {
         if (this.hasMinorDiagonalConflictAt(i)) {
           return true;
