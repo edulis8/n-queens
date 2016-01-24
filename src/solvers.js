@@ -68,7 +68,7 @@ window.countNRooksSolutions = function(n) {
       //places piece in spot i
       board.togglePiece(currentRow, i);
       //looks around the board, confirms that this placement is good
-      if (!board.hasRowConflictAt(currentRow) && !board.hasColConflictAt(i)) {
+      if (!board.hasAnyRooksConflicts()) {
         //if it's good, we'll move to the next row, and start checking at the left again.
         //moved in to the for loop, so we can get all solutions from current peice at i
         newCheckFunction(currentRow + 1);
@@ -86,111 +86,43 @@ window.countNRooksSolutions = function(n) {
 };
 
 window.findNQueensSolution = function(n) {
-
   var board = new Board({
     'n': n
   });
 
   var result;
 
-  var newCheckFunction = function(currentRow, i) {
+  if(n === 2 || n === 3){
+    return board.rows();
+  }
 
-    if(n===0){
+  var newCheckFunction = function(currentRow) {
 
-    }
 
-    i = i || 0;
     if (currentRow === n) {
-      // base case
-      return;
+      // base case 
+      // copy array. could use row.slice() instead of nested map.
+      result =  _.map(board.rows(), function(row){
+        return _.map(row, function(square){
+          return square;
+        });
+      });
     }
-    for (; i < n; i++) {
+
+    for (var i = 0; i < n; i++) {
+      if(result !== undefined){
+        break;
+      }
       board.togglePiece(currentRow, i);
       if (!board.hasAnyQueenConflictsOn(currentRow, i)) {
         newCheckFunction(currentRow + 1);
       } 
-      if(board.hasAnyQueensConflicts()){
-         board.togglePiece(currentRow, i);
-      }
+       board.togglePiece(currentRow, i);
     }
   };
-  // place next piece in new column
-  for (var j = 0; j < n; j++) {
-    board = new Board({'n': n});
-    newCheckFunction(0, j);
-    console.log(board.rows());
-    if(!board.hasAnyQueensConflicts() && _.flatten(board.rows()).reduce(function(a, b) {return a + b;}) === n){
-        return board.rows();
-      }
-  }
-
-  for (var k = 0; k < n; k++) {
-    board = new Board({'n': n});
-    newCheckFunction(k);
-    console.log(board.rows());
-    if(!board.hasAnyQueensConflicts() && _.flatten(board.rows()).reduce(function(a, b) {return a + b;}) === n){
-        return board.rows();
-      }
-  }
-  
-  //return 1;
+  newCheckFunction(0);
+  return result;
 };
-
-  // if (n === 0 || n === 1) {
-  //   return [
-  //     [0]
-  //   ];
-  // }
-
-  // if (n === 2 || n === 3) {
-  //   return [];
-  // }
-
-  // var board = new Board({
-  //   'n': n
-  // });
-
-  // var checkAndPlace = function(currentRow, colIndex) {
-  //   var i = colIndex || 0;
-  //   console.log('i', i);
-
-  //   if (currentRow === n) {
-  //     return;
-  //   }
-  //   // toggling/checking within a row
-  //   for (; i < n; i++) {
-  //     board.togglePiece(currentRow, i);
-  //     //board.get(0)[i]
-  //     if (board.hasAnyQueenConflictsOn(currentRow, i)) {
-
-  //       board.togglePiece(currentRow, i);
-  //     }
-  //   }
-  //   checkAndPlace(currentRow + 1);
-  // };
-
-  // for (var j = 0; j < n; j++) {
-  //   //console.log('before moving starting spot', board.rows());
-  //   board = new Board({
-  //     'n': n
-  //   });
-  //   checkAndPlace(0, j);
-
-  //   //console.log('flatten', _.flatten(board.rows()).reduce(function(a, b) {
-  //     return a + b;
-  //   }));
-
-  //   if (!board.hasAnyQueensConflicts() && (_.flatten(board.rows()).reduce(function(a, b) {
-  //       return a + b;
-  //     })) === n) {
-  //     //console.log('inside conditional?');
-  //     return board.rows();
-  //   }
-  // }
-  // // checkAndPlace(0)
-
-
-
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
